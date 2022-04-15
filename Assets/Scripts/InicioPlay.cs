@@ -7,6 +7,16 @@ public class InicioPlay : MonoBehaviour
 {
     public GameObject pausa;
     public GameObject menuPausa;
+
+    private int i;
+    Spawn spawneo;
+    private void Awake()
+    {
+        spawneo = GameObject.FindWithTag("Manager").GetComponent<Spawn>();
+        Time.timeScale = 1;
+        pausa.SetActive(true);
+        menuPausa.SetActive(false);
+    }
     public void inicio()
     {
         SceneManager.LoadScene("Ingame", LoadSceneMode.Single);
@@ -30,12 +40,20 @@ public class InicioPlay : MonoBehaviour
             Time.timeScale = 0;
             pausa.SetActive(false);
             menuPausa.SetActive(true);
+            i = 1;
+            spawneo.StartCoroutine("stopSpawn");
         }
         else
         {
-            Time.timeScale = 1;
-            pausa.SetActive(true);
-            menuPausa.SetActive(false);
+            if (i == 1)
+            {
+                i = 0;
+                Time.timeScale = 1;
+                pausa.SetActive(true);
+                menuPausa.SetActive(false);
+                spawneo.StartCoroutine("spawn");
+            }
+  
         }
     }
 }

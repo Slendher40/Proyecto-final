@@ -10,6 +10,8 @@ public class EnemyMovement : MonoBehaviour
     public GameObject jugador;
     private Rigidbody2D rb;
     private int vida;
+    public Transform Asteroide;
+    public float velocidad;
 
     float numran;
 
@@ -33,8 +35,8 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
-        transform.Translate(Vector3.up * Time.deltaTime * speed);
+        rb.AddForce(Asteroide.up * velocidad);
+        //transform.Translate(Vector3.up * Time.deltaTime * speed);
     }
 
     private void cambiovida()
@@ -42,18 +44,26 @@ public class EnemyMovement : MonoBehaviour
         if(numran <= -0.4)
         {
             vida = 1;
+            velocidad = 10-vida;
         }else if (numran <= 0 && numran > -0.4)
         {
             vida = 3;
-        }else if (numran <= 0.5 && numran > 0)
+            velocidad = 10 - vida;
+        }
+        else if (numran <= 0.5 && numran > 0)
         {
             vida = 5;
-        }else if (numran <= 1 && numran > 0.5)
+            velocidad = 10 - vida;
+        }
+        else if (numran <= 1 && numran > 0.5)
         {
             vida = 7;
-        }else
+            velocidad = 10 - vida;
+        }
+        else
         {
-            vida = 10;
+            vida = 9;
+            velocidad = 10 - vida;
         }
     }
 

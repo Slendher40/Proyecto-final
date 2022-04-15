@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryContainer: {fileID: 133028704}
   entryTemplate: {fileID: 1350812486}
-  score: 0
+  puntajeFinal: 0
 --- !u!114 &1385230523
 MonoBehaviour:
   m_ObjectHideFlags: 0

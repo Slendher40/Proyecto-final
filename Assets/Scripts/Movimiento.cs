@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Movimiento : MonoBehaviour
 {
@@ -10,8 +11,13 @@ public class Movimiento : MonoBehaviour
     public Transform punta2;
 
     public GameObject gameOver;
+    public Text NumEscudos;
+    public GameObject CantidadEscudos;
+    public int CantEscudo;
 
-    private bool escudoAct;
+    public GameObject berImage;
+    public Text berText;
+
     public int vida;
     private int autoCount = 100;
     public int NumLazers = 0;
@@ -28,7 +34,8 @@ public class Movimiento : MonoBehaviour
         spawn = GameObject.FindWithTag("Manager").GetComponent<Spawn>();
         velocidad = 5;
         vida = 1;
-        escudoAct = false;
+        CantEscudo = 0;
+        berImage.SetActive(false);
     }
 
     // Update is called once per frame
@@ -39,9 +46,21 @@ public class Movimiento : MonoBehaviour
         dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
         angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        movimiento();
         shoot();
-
+        NumEscudos.text = CantEscudo.ToString();
+        berText.text = ((((100 * autoCount) / 75)-100)*(-1)).ToString();
+        if (CantEscudo >= 1)
+        {
+            CantidadEscudos.SetActive(true);
+        }
+        else
+        {
+            CantidadEscudos.SetActive(false);
+        }
+    }
+    private void FixedUpdate()
+    {
+        movimiento();
     }
 
     private void movimiento() //usando transform.Translate
@@ -80,7 +99,7 @@ public class Movimiento : MonoBehaviour
         if (col.gameObject.tag == "Mar" || col.gameObject.tag == "Enemigo")
         {
             vida -= 1;
-            escudoAct = false;
+            CantEscudo -= 1;
         }
         if (vida <= 0)
         {
@@ -89,12 +108,13 @@ public class Movimiento : MonoBehaviour
         if (col.gameObject.tag == "Escudo")
         {
             vida += 1;
-            escudoAct = true;
+            CantEscudo += 1;
         }
-        if (vida == 1 && escudoAct == false)
+        if (vida == 1 && CantEscudo == 0)
         {
             velocidad = 8;
             autoCount = 0;
+            berImage.SetActive(true);
             if (autoStarted == false)
             {
                 autoStarted = true;
@@ -109,6 +129,7 @@ public class Movimiento : MonoBehaviour
         velocidad = 5;
         autoCount = 100;
         autoStarted = false;
+        berImage.SetActive(false);
     }
 
     private void OnDestroy()

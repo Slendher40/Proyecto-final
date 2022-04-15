@@ -18,10 +18,24 @@ public class Spawn : MonoBehaviour
         dificultad = 3;
         puntos = GameObject.FindWithTag("Manager").GetComponent<Score>();
         Time.timeScale = 1;
+        StartCoroutine("spawn");
+        gameOver.SetActive(false);
+    }
+
+    IEnumerator spawn()
+    {
         StartCoroutine("SpawneoMart");
         StartCoroutine("SpawneoAst");
         StartCoroutine("dific");
-        gameOver.SetActive(false);
+        yield return null;
+    }
+
+    IEnumerator stopSpawn()
+    {
+        StopCoroutine("SpawneoMart");
+        StopCoroutine("SpawneoAst");
+        StopCoroutine("dific");
+        yield return null;
     }
 
     IEnumerator SpawneoAst()
@@ -61,7 +75,6 @@ public class Spawn : MonoBehaviour
                 dificultad = 0.25f;
                 StopCoroutine("dific");
             }
-            Debug.Log("dificultad: " + dificultad);
             yield return new WaitForSecondsRealtime(2);
         }
     }

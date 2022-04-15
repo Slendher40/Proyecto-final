@@ -30,7 +30,8 @@ public class MartianMove : MonoBehaviour
         Vector3 direccion = jugador.transform.position - transform.position;
         angle = Mathf.Atan2(direccion.y, direccion.x) * Mathf.Rad2Deg;
         rb.rotation = angle-90;
-        transform.Translate(Vector3.up * Time.deltaTime * 1.5f);
+        rb.AddForce(shieldSpawn.up*20);
+        //transform.Translate(Vector3.up * Time.deltaTime * 1.5f);
     }
 
     private void OnCollisionEnter2D(Collision2D col)

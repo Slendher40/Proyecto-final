@@ -137,3 +137,5 @@ MonoBehaviour:
   speed: 5
   puntos: 2
   jugador: {fileID: 0}
+  Asteroide: {fileID: 1412643556572562318}
+  velocidad: 0
