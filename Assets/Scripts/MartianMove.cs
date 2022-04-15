@@ -8,13 +8,18 @@ public class MartianMove : MonoBehaviour
     private Rigidbody2D rb;
     private int vida;
 
+    public Transform shieldSpawn;
+
+    private int NumRand;
     private float angle;
+    public GameObject Escudo;
 
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
         vida = 10;
         jugador = GameObject.FindGameObjectWithTag("Jugador");
+        NumRand = Random.Range(1, 5);
     }
 
     // Update is called once per frame
@@ -38,6 +43,14 @@ public class MartianMove : MonoBehaviour
         if (vida <= 0)
         {
             Destroy(this.gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (NumRand == 2)
+        {
+            Instantiate(Escudo, shieldSpawn.position, Quaternion.identity);
         }
     }
 }

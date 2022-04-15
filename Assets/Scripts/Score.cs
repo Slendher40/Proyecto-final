@@ -18,6 +18,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         puntaje = 0;
+        StartCoroutine("sumascoresegundos");
 
     }
     void Update()
@@ -31,24 +32,19 @@ public class Score : MonoBehaviour
         puntaje += suma;
     }
 
-    public void supervivencia()
-    {
-        puntaje += 1;
-    }
-
     public void puntFIN()
     {
+        StopCoroutine("sumascoresegundos");
         puntajeFinal = puntaje;
         PlayerPrefs.SetInt(scorePrefsName, puntajeFinal);
     }
 
-   /* private void SaveData()
+    IEnumerator sumascoresegundos()
     {
-        PlayerPrefs.SetInt(scorePrefsName, puntajeFinal);
+        while (true)
+        {
+            puntaje += 1;
+            yield return new WaitForSeconds(1);
+        }
     }
-
-    private void LoadData()
-    {
-        puntajeFinal = PlayerPrefs.GetInt(scorePrefsName, 0);
-    }*/
 }

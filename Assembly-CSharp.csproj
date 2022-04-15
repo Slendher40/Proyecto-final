@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\Spawn.cs" />
     <Compile Include="Assets\Scripts\highscoreTable.cs" />
     <Compile Include="Assets\Scripts\Movimiento.cs" />
+    <Compile Include="Assets\Scripts\Escudo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

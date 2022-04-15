@@ -10,15 +10,17 @@ public class Spawn : MonoBehaviour
     
     private Quaternion angulo;
     public GameObject gameOver;
+    private float dificultad = 3;
 
     Score puntos;
-    void Start()
+    void Awake()
     {
+        dificultad = 3;
         puntos = GameObject.FindWithTag("Manager").GetComponent<Score>();
         Time.timeScale = 1;
         StartCoroutine("SpawneoMart");
         StartCoroutine("SpawneoAst");
-        StartCoroutine("sumascoresegundos");
+        StartCoroutine("dific");
         gameOver.SetActive(false);
     }
 
@@ -29,7 +31,7 @@ public class Spawn : MonoBehaviour
             int indice = Random.Range(0, spawners.Length);
             angulo.eulerAngles = new Vector3(0, 0, Random.Range(0, 180));
             Instantiate(enemigoAst, spawners[indice].position, angulo);
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSecondsRealtime(dificultad);
         }
     }
     IEnumerator SpawneoMart()
@@ -38,17 +40,35 @@ public class Spawn : MonoBehaviour
         {
             int indice = Random.Range(0, spawners.Length);
             Instantiate(enemigoMart, spawners[indice].position, Quaternion.identity);
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSecondsRealtime(dificultad*3);
         }
     }
-
-    IEnumerator sumascoresegundos()
+    IEnumerator dific()
     {
         while (true)
         {
-            puntos.supervivencia();
-            yield return new WaitForSeconds(1);
+            if (dificultad >= 2)
+            {
+                dificultad -= 0.05f;
+            } else if (dificultad < 2 && dificultad >= 1)
+            {
+                dificultad -= 0.025f;
+            } else if (dificultad < 1 && dificultad >= 0.25)
+            {
+                dificultad -= 0.005f;
+            }else if (dificultad < 0.25)
+            {
+                dificultad = 0.25f;
+                StopCoroutine("dific");
+            }
+            Debug.Log("dificultad: " + dificultad);
+            yield return new WaitForSecondsRealtime(2);
         }
+    }
+    public void dead()
+    {
+        StopCoroutine("SpawneoMart");
+        StopCoroutine("SpawneoAst");
     }
 }
 

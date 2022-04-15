@@ -5,9 +5,11 @@ using UnityEngine;
 public class Disparo : MonoBehaviour
 {
     Score puntos;
+    Movimiento NLazers;
     private void Start()
     {
         puntos = GameObject.FindWithTag("Manager").GetComponent<Score>();
+        NLazers = GameObject.FindWithTag("Jugador").GetComponent<Movimiento>();
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -20,8 +22,11 @@ public class Disparo : MonoBehaviour
         {
             puntos.sumascore(5);
         }
-
-        Destroy(this.gameObject);
+        if (col.gameObject.tag != "Proyectil" || NLazers.NumLazers >= 50)
+        {
+            Destroy(this.gameObject);
+        }
+        
     }
     
 }
