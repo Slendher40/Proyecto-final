@@ -44,7 +44,7 @@ public class EnemyMovement : MonoBehaviour
         if(numran <= -0.4)
         {
             vida = 1;
-            velocidad = 10-vida;
+            velocidad = 8-vida;
         }else if (numran <= 0 && numran > -0.4)
         {
             vida = 3;

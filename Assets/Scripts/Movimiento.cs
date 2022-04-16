@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class Movimiento : MonoBehaviour
 {
-    public int velocidad;
+    public float velocidad;
     public Rigidbody2D pfLazer;
+    public Rigidbody2D nave;
+    public Transform naveT;
     public Transform punta1;
     public Transform punta2;
 
@@ -32,7 +34,7 @@ public class Movimiento : MonoBehaviour
     {
         puntos = GameObject.FindWithTag("Manager").GetComponent<Score>();
         spawn = GameObject.FindWithTag("Manager").GetComponent<Spawn>();
-        velocidad = 5;
+        velocidad = 0.0005f;
         vida = 1;
         CantEscudo = 0;
         berImage.SetActive(false);
@@ -47,6 +49,7 @@ public class Movimiento : MonoBehaviour
         angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         shoot();
+        movimiento();
         NumEscudos.text = CantEscudo.ToString();
         berText.text = ((((100 * autoCount) / 75)-100)*(-1)).ToString();
         if (CantEscudo >= 1)
@@ -58,16 +61,14 @@ public class Movimiento : MonoBehaviour
             CantidadEscudos.SetActive(false);
         }
     }
-    private void FixedUpdate()
-    {
-        movimiento();
-    }
+
 
     private void movimiento() //usando transform.Translate
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            transform.Translate(Vector3.up * Time.deltaTime * velocidad);
+            nave.AddForce(naveT.up * velocidad);
+            //transform.Translate(Vector3.up * Time.deltaTime * velocidad);
         }
         
         transform.rotation = Quaternion.AngleAxis(angle-90, Vector3.forward);
@@ -110,23 +111,25 @@ public class Movimiento : MonoBehaviour
             vida += 1;
             CantEscudo += 1;
         }
-        if (vida == 1 && CantEscudo == 0)
+        if(col.gameObject.tag != "Proyectil")
         {
-            velocidad = 8;
-            autoCount = 0;
-            berImage.SetActive(true);
-            if (autoStarted == false)
+            if (vida == 1 && CantEscudo == 0)
             {
-                autoStarted = true;
-                StartCoroutine("autoShoot");
+                velocidad = 0.0008f;
+                berImage.SetActive(true);
+                if (autoStarted == false)
+                {
+                    autoStarted = true;
+                    autoCount = 0;
+                    StartCoroutine("autoShoot");
+                }
             }
         }
-
     }
 
     private void normalidad()
     {
-        velocidad = 5;
+        velocidad = 0.0005f;
         autoCount = 100;
         autoStarted = false;
         berImage.SetActive(false);
@@ -143,6 +146,7 @@ public class Movimiento : MonoBehaviour
     {
         while (autoCount < 75)
         {
+            Debug.Log("autoCount: " + autoCount);
             var rotacionLazer = Quaternion.AngleAxis(angle - 90, Vector3.forward);
             Rigidbody2D bala = Instantiate(pfLazer);
             bala.transform.position = punta1.position;
